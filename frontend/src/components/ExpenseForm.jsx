@@ -20,7 +20,7 @@ export default function ExpenseForm({ apiUrl, onExpenseAdded }) {
     try {
       const res = await fetch(`${apiUrl}/expenses`, {
         method: "POST",
-        headers: { "COntent-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payLoad),
       });
       if (res.ok) {
