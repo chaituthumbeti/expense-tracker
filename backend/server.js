@@ -28,8 +28,19 @@ app.post("/expenses", async (req, res) => {
   try {
     const { amount, category, description, date } = req.body;
 
-    if (!amount || amount <= 0 || !category || !date) {
+    if (
+      amount == undefined ||
+      typeof amount !== "number" ||
+      amount <= 0 ||
+      !category ||
+      typeof category !== "string" ||
+      !date
+    ) {
       return res.status(400).json({ error: "Invalid input" });
+    }
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate)) {
+      return res.status(400).json({ error: "Invalid date format" });
     }
 
     // generate idempotency key
@@ -48,6 +59,7 @@ app.post("/expenses", async (req, res) => {
       return res.json(existing.rows[0]);
     }
 
+    //Insert new expense
     const id = randomUUID();
 
     const result = await pool.query(
@@ -67,7 +79,7 @@ app.post("/expenses", async (req, res) => {
 // GET /expenses
 app.get("/expenses", async (req, res) => {
   try {
-    const { category, sort } = req.query;
+    const { category, min_amount, max_amount, sort } = req.query;
 
     let query = "SELECT * from expenses";
     let values = [];
@@ -78,12 +90,23 @@ app.get("/expenses", async (req, res) => {
       conditions.push(`category=$${values.length}`);
     }
 
+    if (min_amount) {
+      values.push(parseInt(min_amount));
+      conditions.push(`amount >= $${values.length}`);
+    }
+    if (max_amount) {
+      values.push(parseInt(max_amount));
+      conditions.push(`amount <= $${values.length}`);
+    }
+
     if (conditions.length > 0) {
       query += " WHERE " + conditions.join(" AND ");
     }
-
-    query += " ORDER BY date DESC";
-
+    if (sort === "date_asc") {
+      query += " ORDER BY date ASC";
+    } else {
+      query += " ORDER BY date DESC";
+    }
     const result = await pool.query(query, values);
     res.json(result.rows);
   } catch (err) {
