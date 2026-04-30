@@ -13,17 +13,70 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background: linear-gradient(135deg, #eef2f7 0%, #eaf2f8 60%);
   color: var(--text);
-  font-family:
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    sans-serif;
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* diagonal overlay for subtle texture */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.03) 0%, rgba(37,99,235,0.02) 100%);
+  transform: skewY(-6deg) translateY(-6%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.9;
+  z-index: 0;
+}
+
+/* top-right cool orb */
+body::before {
+  content: '';
+  position: fixed;
+  top: -28%;
+  right: -18%;
+  width: 740px;
+  height: 740px;
+  background: radial-gradient(
+    circle at 80% 20%,
+    rgba(56, 189, 248, 0.14) 0%,
+    rgba(99, 102, 241, 0.08) 30%,
+    rgba(59, 130, 246, 0.04) 60%,
+    transparent 82%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* bottom-right warm orb */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -32%;
+  right: -8%;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(
+    circle at 80% 80%,
+    rgba(255, 218, 185, 0.18) 0%,
+    rgba(255, 159, 90, 0.12) 28%,
+    rgba(245, 101, 84, 0.06) 56%,
+    transparent 82%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 #root {
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
 button,

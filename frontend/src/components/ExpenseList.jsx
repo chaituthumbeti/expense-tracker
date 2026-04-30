@@ -3,11 +3,23 @@ export default function ExpenseList({ expenses, loading }) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
 
-    return new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).format(date);
+    const day = date.getDate();
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    const getDaySuffix = (d) => {
+      if (d > 3 && d < 21) return 'th';
+      switch (d % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    };
+
+    return `${day}${getDaySuffix(day)} ${month} ${year}`;
   };
 
   return (

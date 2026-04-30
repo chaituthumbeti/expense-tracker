@@ -9,7 +9,7 @@ export default function Header({ totalAmount }) {
 
       <div className="balance-card">
         <span className="balance-label">Total spent</span>
-        <h2 className="total-amount">${Number(totalAmount || 0).toFixed(2)}</h2>
+        <h2 className="total-amount">₹{Number(totalAmount || 0).toFixed(2)}</h2>
       </div>
     </header>
   )
