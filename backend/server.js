@@ -63,3 +63,31 @@ app.post("/expenses", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+// GET /expenses
+app.get("/expenses", async (req, res) => {
+  try {
+    const { category, sort } = req.query;
+
+    let query = "SELECT * from expenses";
+    let values = [];
+    let conditions = [];
+
+    if (category) {
+      values.push(category);
+      conditions.push(`category=$${values.length}`);
+    }
+
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    query += " ORDER BY date DESC";
+
+    const result = await pool.query(query, values);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
