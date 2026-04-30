@@ -15,17 +15,25 @@ body {
   min-height: 100vh;
   background: linear-gradient(135deg, #eef2f7 0%, #eaf2f8 60%);
   color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    sans-serif;
   position: relative;
   overflow-x: hidden;
 }
 
 /* diagonal overlay for subtle texture */
 html::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
-  background: linear-gradient(120deg, rgba(255,255,255,0.03) 0%, rgba(37,99,235,0.02) 100%);
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(37, 99, 235, 0.02) 100%
+  );
   transform: skewY(-6deg) translateY(-6%);
   pointer-events: none;
   mix-blend-mode: overlay;
@@ -35,7 +43,7 @@ html::before {
 
 /* top-right cool orb */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: -28%;
   right: -18%;
@@ -55,7 +63,7 @@ body::before {
 
 /* bottom-right warm orb */
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   bottom: -32%;
   right: -8%;
