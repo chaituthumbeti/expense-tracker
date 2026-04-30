@@ -79,7 +79,8 @@ app.post("/expenses", async (req, res) => {
 // GET /expenses
 app.get("/expenses", async (req, res) => {
   try {
-    const { category, min_amount, max_amount, sort } = req.query;
+    const { category, min_amount, max_amount, start_date, end_date, sort } =
+      req.query;
 
     let query = "SELECT * from expenses";
     let values = [];
@@ -98,6 +99,15 @@ app.get("/expenses", async (req, res) => {
       values.push(parseInt(max_amount));
       conditions.push(`amount <= $${values.length}`);
     }
+    if (start_date) {
+      values.push(start_date);
+      conditions.push(`date >= $${values.length}`);
+    }
+
+    if (end_date) {
+      values.push(end_date);
+      conditions.push(`date <= $${values.length}`);
+    }
 
     if (conditions.length > 0) {
       query += " WHERE " + conditions.join(" AND ");
@@ -105,7 +115,7 @@ app.get("/expenses", async (req, res) => {
     if (sort === "date_asc") {
       query += " ORDER BY date ASC";
     } else {
-      query += " ORDER BY date DESC";
+      query += " ORDER BY date DESC"; //deafult
     }
     const result = await pool.query(query, values);
     res.json(result.rows);
